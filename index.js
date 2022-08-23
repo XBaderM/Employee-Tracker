@@ -48,4 +48,11 @@ async function Departments() {
     mainMenu();
 }
 
+async function Roles() {
+    const [getRows, fields] = await connection.execute('SELECT * FROM roles');
+    console.table(getRows);
+
+    mainMenu();
+}
+
 mainMenu();
