@@ -62,4 +62,25 @@ async function Employees() {
     mainMenu();
 }
 
+async function addDepartment() {
+    const res = await inquirer.prompt([{
+        type: 'input',
+        name: 'newDepartment',
+        message: "What is the new department's name?",
+    }]);
+
+    try {
+        await connection.query('INSERT INTO departments (department_name) VALUE (?)',
+            [
+                res.newDepartment
+            ]);
+
+        console.log(`${(res.newDepartment)} successfully added.\n`);
+    } catch (e) {
+        console.log(`Department '${res.newDepartment}' already exists.\n`);
+    }
+
+    mainMenu();
+}
+
 mainMenu();
