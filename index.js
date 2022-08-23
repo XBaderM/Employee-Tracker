@@ -55,4 +55,11 @@ async function Roles() {
     mainMenu();
 }
 
+async function Employees() {
+    const [getRows, fields] = await connection.execute('SELECT * FROM employees');
+    console.table(getRows);
+
+    mainMenu();
+}
+
 mainMenu();
