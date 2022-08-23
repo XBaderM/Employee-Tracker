@@ -83,4 +83,16 @@ async function addDepartment() {
     mainMenu();
 }
 
+async function addRole() {
+    let departments = {};
+
+    const [getRows, fields] = await connection.query('SELECT * FROM departments');
+
+    getRows.forEach((role) => {
+        departments[role.department_name] = role.id;
+    });
+
+    displayAddRole(departments);
+}
+
 mainMenu();
