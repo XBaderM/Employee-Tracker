@@ -129,4 +129,26 @@ async function displayAddRole(departments) {
     mainMenu();
 }
 
+async function getEmployees() {
+    let employees = {};
+
+    const [employeeRows] = await connection.query('SELECT id, CONCAT(last_name, ", ", first_name) AS name FROM employees ORDER BY last_name, first_name');
+
+    employeeRows.forEach((employee) => employees[employee.name] = employee.id);
+     console.log(employees);
+    return employees;
+
+}
+
+// Get list of roles
+async function getRoles() {
+    let roles = {};
+
+    const [roleRows] = await connection.query('SELECT * FROM roles');
+
+    roleRows.forEach((role) => roles[role.title] = role.id);
+
+    return roles;
+}
+
 mainMenu();
