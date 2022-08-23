@@ -202,5 +202,42 @@ async function addEmployeePrompt(roles, employees) {
     mainMenu();
 }
 
+async function updateEmployee() {
+    console.log('update employee');
+
+    const employees = await getEmployees();
+    const roles = await getRoles();
+
+    updateEmployeePrompt(employees, roles);
+}
+
+async function updateEmployeePrompt(employees, roles) {
+    const res = await inquirer.prompt([{
+            type: 'list',
+            name: 'updateAnEmployee',
+            message: 'What employee would you like to update?',
+            choices: Object.keys(employees)
+        },
+        {
+            type: 'list',
+            name: 'updatedRole',
+            message: 'What is the updated role for this employee?',
+            choices: Object.keys(roles)
+        }
+    ]);
+    try {
+        await connection.query('UPDATE employees SET role_id = ? WHERE id = ?',
+            [
+                roles[res.updatedRole],
+                employees[res.updateAnEmployees]
+            ]);
+        console.log(`updated successfully.`);
+    } catch (e) {
+        console.log(e.message);
+    }
+
+    mainMenu();
+}
+
 
 mainMenu();
