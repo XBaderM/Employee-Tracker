@@ -151,4 +151,56 @@ async function getRoles() {
     return roles;
 }
 
+async function addEmployee() {
+    const roles = await getRoles();
+    const employees = {
+        None: null,
+        ...(await getEmployees())
+    };
+
+    addEmployeePrompt(roles, employees);
+}
+
+// Add new Employee
+async function addEmployeePrompt(roles, employees) {
+    const res = await inquirer.prompt([{
+            type: 'input',
+            name: 'firstName',
+            message: "please enter employee's first name?"
+        },
+        {
+            type: 'input',
+            name: 'lastName',
+            message: "please enter employee's last name?"
+        },
+        {
+            type: 'list',
+            name: 'employeeRole',
+            message: "please enter employee's role?",
+            choices: Object.keys(roles)
+        },
+        {
+            type: 'list',
+            name: 'employeeManager',
+            message: "please enter employee's manager?",
+            choices: Object.keys(employees)
+        }
+    ]);
+    try {
+        await connection.query('INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUE (?, ?, ?, ?)',
+            [
+                res.firstName,
+                res.lastName,
+                roles[res.employeeRole],
+                employees[res.employeeManager]
+            ]);
+
+        console.log(`${(res.firstName)} ${(res.lastName)} was added successfully. \n`);
+    } catch (e) {
+        console.log(e.message);
+    }
+    mainMenu();
+}
+
+
 mainMenu();
