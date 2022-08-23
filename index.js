@@ -41,4 +41,11 @@ async function mainMenu() {
     }
 }
 
+async function Departments() {
+    const [getRows, fields] = await connection.execute('SELECT * FROM departments ORDER BY id');
+    console.table(getRows);
+
+    mainMenu();
+}
+
 mainMenu();
