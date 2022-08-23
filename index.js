@@ -95,4 +95,38 @@ async function addRole() {
     displayAddRole(departments);
 }
 
+async function displayAddRole(departments) {
+    const res = await inquirer.prompt([{
+            type: 'input',
+            name: 'newRoleName',
+            message: 'role name please?'
+        },
+        {
+            type: 'number',
+            name: 'newRoleSalary',
+            message: 'salary for this role?'
+        },
+        {
+            type: 'list',
+            name: 'newRoleDepartment',
+            message: 'which department is this role in?',
+            choices: Object.keys(departments)
+        }
+    ]);
+
+    try {
+        await connection.query('INSERT INTO roles (title, salary, department_id) VALUE (?, ?, ?)',
+            [
+                res.newRoleName,
+                res.newRoleSalary,
+                departments[res.newRoleDepartment]
+            ]);
+        console.log(`${(res.newRoleName)} successfullly added. \n`);
+    } catch (e) {
+        console.log(`Role '${res.newRoleName}' already exists. \n`);
+    }
+
+    mainMenu();
+}
+
 mainMenu();
