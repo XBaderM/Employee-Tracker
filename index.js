@@ -1,11 +1,13 @@
+// get the dependencies
 const inquirer = require('inquirer');
+
 
 let connection;
 
 console.log(`================`);
 console.log(`Employee Tracker`);
 console.log(`================`);
-
+//main menu to begin the selection
 async function mainMenu() {
     connection = await require('./config/dbconnection');
 
@@ -40,7 +42,7 @@ async function mainMenu() {
             break;
     }
 }
-
+// get departments from database
 async function Departments() {
     const [getRows, fields] = await connection.execute('SELECT * FROM departments ORDER BY id');
     console.table(getRows);
@@ -48,6 +50,7 @@ async function Departments() {
     mainMenu();
 }
 
+//get roles from database
 async function Roles() {
     const [getRows, fields] = await connection.execute('SELECT * FROM roles');
     console.table(getRows);
@@ -55,13 +58,14 @@ async function Roles() {
     mainMenu();
 }
 
+//get employees from database
 async function Employees() {
     const [getRows, fields] = await connection.execute('SELECT * FROM employees');
     console.table(getRows);
 
     mainMenu();
 }
-
+ 
 async function addDepartment() {
     const res = await inquirer.prompt([{
         type: 'input',
@@ -150,7 +154,7 @@ async function getRoles() {
 
     return roles;
 }
-
+// add employee 
 async function addEmployee() {
     const roles = await getRoles();
     const employees = {
@@ -201,7 +205,7 @@ async function addEmployeePrompt(roles, employees) {
     }
     mainMenu();
 }
-
+// update employee
 async function updateEmployee() {
     console.log('update employee');
 
@@ -211,6 +215,7 @@ async function updateEmployee() {
     updateEmployeePrompt(employees, roles);
 }
 
+// add employee questions to update
 async function updateEmployeePrompt(employees, roles) {
     const res = await inquirer.prompt([{
             type: 'list',
